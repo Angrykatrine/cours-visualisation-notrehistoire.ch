@@ -69,7 +69,7 @@ function ready(error, dataGeo, data) {
             .attr("width", 90)
             .html("notreHistoire.ch – géolocalisation des publications")
             .style("font-family", "sans-serif")
-            .style("font-size", 20)
+            .style("font-size", 22)
 
     svg
         .append("text")
