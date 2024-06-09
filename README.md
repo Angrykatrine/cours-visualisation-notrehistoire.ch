@@ -1,5 +1,7 @@
 # Cours visualisation - notreHistoire.ch (projet de Mathias Winiger)
 
+**Vers la visualisation**: https://angrykatrine.github.io/cours-visualisation-notrehistoire.ch/
+
 ## Descriptif
 
 ### Contexte de la problématique
