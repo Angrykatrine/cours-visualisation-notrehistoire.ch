@@ -29,14 +29,14 @@ function ready(error, dataGeo, data) {
         .enter()
         .append("path")
         .attr("d", path)
-        .attr("fill", "whitesmoke")
+        .attr("fill", "silver")
         .attr("stroke", "white")
         .attr("stroke-width", 1);
 
     // Create color scale
     var color = d3.scaleOrdinal()
       .domain(["A", "B"])
-      .range([ "orchid", "midnightblue"])
+      .range([ "springgreen", "midnightblue"])
 
     // Create and visualise geolocated points
     svg
