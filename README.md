@@ -26,6 +26,7 @@ Cette visualisation offre avant tout une impression. Elle ne donne aucun chiffre
 
 ## Sources
 
+- Données tirées de https://notrehistoire.ch/api/v1
 - d3 version 4
 - d3 geoProjection
 - d3 scale-chromatic
