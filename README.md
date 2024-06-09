@@ -28,9 +28,9 @@ Cette visualisation offre avant tout une impression. Elle ne donne aucun chiffre
 
 - Données tirées de https://notrehistoire.ch/api/v1
 - d3 version 4
-- d3 geoProjection
-- d3 scale-chromatic
+- d3 geoProjection - https://d3js.org/d3-geo/projection
+- d3 scale-chromatic - https://d3js.org/d3-scale-chromatic
 - Carte Suisse tirée de https://github.com/zcreativelabs/SfGZ-d3-map
-- Code inspirée du projet "Where surfers live" de Yan Holtz https://www.data-to-viz.com/story/GPSCoordWithoutValue.html
+- Code inspirée du projet "Where surfers live" de Yan Holtz - https://www.data-to-viz.com/story/GPSCoordWithoutValue.html
 
 
