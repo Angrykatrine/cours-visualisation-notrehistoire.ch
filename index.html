@@ -6,7 +6,25 @@
 <script src="https://d3js.org/d3-geo-projection.v2.min.js"></script>
 <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
 
+<style>
+  #selector {
+    position: absolute;
+    left: 90px;
+    top: 200px;
+
+    font-family: monospace;
+    font-size: 14;
+  }
+</style>
+
 <body>
+
+  <div id="selector">
+    <input type="checkbox" class="checkbox" value="A" checked><label>Standard</label><br>
+    <input type="checkbox" class="checkbox" value="B" checked><label>Repérage</label>
+  </div>
+
+
   <svg id="svg" width="1080" height="720"></svg>
 
   <!-- Load script -->
