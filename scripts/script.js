@@ -78,7 +78,7 @@ function ready(error, dataGeo, data) {
             .attr("x", 60)
             .attr("y", 80)
             .attr("width", 90)
-            .html("30'114 entrées, état au 30 avril 2024")
+            .html("30'114 entrées (26'698 standards, 3'415 repérages), état au 30 avril 2024")
             .style("font-family", "monospace")
             .style("font-size", 11)
 
