@@ -36,7 +36,7 @@ function ready(error, dataGeo, data) {
     // Create color scale
     var color = d3.scaleOrdinal()
       .domain(["A", "B"])
-      .range([ "Skyblue", "MidnightBlue"])
+      .range([ "Dodgerblue", "Darkslateblue"])
 
     // Create and visualise geolocated points
     svg
