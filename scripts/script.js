@@ -1,109 +1,149 @@
-// Define svg element
-var svg = d3.select("svg"),
-    width = +svg.attr("width"),
-    height = +svg.attr("height");
-
-// Define map size, position and zoom
-const projection = d3
-    .geoMercator()
-    .translate([width / 2, height / 2])
-    .rotate([-7.43864, -46.95108, 0])
-    .center([0.54, -0.1])
-    .scale(18000);
+// Define map element, setup base coordinates and zoom
+var map = L
+    .map("map")
+    .setView([46.300,8.245], 8.2);
 
 // Load assets
 d3.queue()
-    .defer(d3.json, "assets/ch.json")
-    .defer(d3.csv, "assets/data_simplified.csv")
+    .defer(d3.csv, "assets/NH_data.csv")
     .await(ready);
 
-function ready(error, dataGeo, data) {
+function ready(error, data) {
+    // Add tiles from OpenStreetMap to the map
+    L.tileLayer(
+        'https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}', {
+            attribution: 'Tiles &copy; Esri &mdash; Esri, DeLorme, NAVTEQ',
+            maxZoom: 16,
+            minZoom: 4,
+        }
+    ).addTo(map);
 
-    // Create map
-    const path = d3.geoPath().projection(projection);
+    // Add svg layer to the map
+    L.svg().addTo(map);
 
-    // Visualise map
-    svg
-        .selectAll("path")
-        .data(dataGeo.features)
-        .enter()
-        .append("path")
-        .attr("d", path)
-        .attr("fill", "silver")
-        .attr("stroke", "white")
-        .attr("stroke-width", 1);
+    // Add hover tooltip to map
+    var tooltip = d3.select("#map")
+        .append("div")
+        .attr("class", "tooltip")
+        .style("opacity", 1)
+        .style("background-color", "white")
+        .style("border", "solid")
+        .style("border-width", "2px")
+        .style("border-radius", "5px")
+        .style("padding", "5px")
+        .style("position", "absolute")
+        .style("z-index", "9999")
+        .style("font-family", "monospace")
+        .style("font-size", "12px")
+        .style("top", "20px")
+        .style("right", "20px");
 
-    // Create color scale
-    var color = d3.scaleOrdinal()
-      .domain(["A", "B"])
-      .range([ "springgreen", "midnightblue"])
+    // Function to update tooltip: hover
+    var mouseover = function(d) {
+        console.log('hover')
+        tooltip.style("opacity", 1)
+    }
+
+    // Function to update tooltip: move
+    var mousemove = function(d) {
+        tooltip
+            .html("<strong>" + d.title + "</strong><br>" + "Date de publication: " + d.published + "<br>" + "Période: " + d.period + "<br>" + "Nombre de vues: " + d.views)
+    }
+
+    // Function to update tooltip: leave
+    var mouseleave = function(d) {
+        tooltip.style("opacity", 0)
+    }
 
     // Create and visualise geolocated points
-    svg
-        .selectAll("points")
-        .data(data)
-        .enter()
-        .append("circle")
-            .attr("class", function(d){ 
-                return d.featured;
-            })
-            .attr("cx", function (d) {
-                return projection([+d.long, +d.lat])[0];
-            })
-            .attr("cy", function (d) {
-                return projection([+d.long, +d.lat])[1];
-            })
-            .attr("r", 6)
-            .style("fill", function(d){
-                return color(d.featured);
-            })
-            .attr("fill-opacity", 0.05);
-
-    // Add title and legend
-    svg
-        .append("text")
-            .attr("text-anchor", "start")
-            .style("fill", "black")
-            .attr("x", 60)
-            .attr("y", 60)
-            .attr("width", 90)
-            .html("notreHistoire.ch – géolocalisation des publications")
-            .style("font-family", "sans-serif")
-            .style("font-size", 20)
-
-    svg
-        .append("text")
-            .attr("text-anchor", "start")
-            .style("fill", "black")
-            .attr("x", 60)
-            .attr("y", 80)
-            .attr("width", 90)
-            .html("30'114 entrées (26'698 standards, 3'415 repérages), état au 30 avril 2024")
-            .style("font-family", "monospace")
-            .style("font-size", 11)
-
-    // Show and hide points based on checkbox selection
-    function update(){
-
-        // Check value of checkbox
-        d3.selectAll(".checkbox").each(function(d){
-          checkbox = d3.select(this);
-          group = checkbox.property("value")
-  
-          // If the box is check, show the group
-          if(checkbox.property("checked")){
-            svg.selectAll("."+group).transition().duration(1000).style("opacity", 1).attr("r", 6)
-  
-          // Otherwise hide it
-          }else{
-            svg.selectAll("."+group).transition().duration(1000).style("opacity", 0).attr("r", 0)
-          }
+    d3.select("#map")
+    .select("svg")
+    .selectAll("points")
+    .data(data)
+    .enter()
+    .append("circle")
+        .attr("class", function(d){ 
+            // Add data from CSV as class for filtering
+            return "circle " + ( d.featured == "B" ? "featured" : "" ) + " " + d.media + " " + d.views_id;
         })
-      }
+        .attr("data-views", function(d){ 
+            return d.views;
+        })
+        .attr("data-period", function(d){ 
+            return d.period;
+        })
+        .attr("data-published", function(d){ 
+            return d.published;
+        })
+        .attr("cx", function (d) {
+            return map.latLngToLayerPoint([d.lat, d.long]).x;
+        })
+        .attr("cy", function (d) {
+            return map.latLngToLayerPoint([d.lat, d.long]).y;
+        })
+        .attr("r", 6)
+        .style("fill", "springgreen")
+        .attr("fill-opacity", 0.50)
+        .style("pointer-events", "all")
+    .on("mouseover", mouseover)
+    .on("mousemove", mousemove)
+    .on("mouseleave", mouseleave)
+
+    // Function that update circle position if zoom or position change
+    function update() {
+        d3.selectAll("circle")
+        .attr("cx", function(d){ return map.latLngToLayerPoint([d.lat, d.long]).x })
+        .attr("cy", function(d){ return map.latLngToLayerPoint([d.lat, d.long]).y })
+    }
+
+    // Register all checkboxes and circles
+    var checkboxes = d3.selectAll(".checkbox-filter");
+    var circles = Array.from(document.querySelectorAll(".circle"));
+    var checked = {};
+
+    // Check origin filters
+    getChecked("featured");
+    getChecked("media");
+    getChecked("views");
+
+    // Filter checked box
+    function filter(){
+        checkbox = d3.select(this)
+        group = checkbox.property("value")
+        type = checkbox.property("name")
+
+        getChecked(type)
+        setVisibility();
+    }
+
+    // Check filters status
+    function getChecked(name){
+        checked[name] = Array.from(document.querySelectorAll("input[name="+name+"]:checked")).map(function (el) {
+            return el.value
+        });
+    }
+
+    // Set visibility of circles based on filters status
+    function setVisibility(){
+        circles.map(function (el) {
+            var featuredCheck = checked.featured.length ? _.intersection(Array.from(el.classList), checked.featured).length : true;
+            var mediaCheck = checked.media.length ? _.intersection(Array.from(el.classList), checked.media).length : true;
+            var viewsCheck = checked.views.length ? _.intersection(Array.from(el.classList), checked.views).length : true;
+
+            if ( featuredCheck && mediaCheck && viewsCheck ) {
+                el.style.opacity = "1"
+            } else {
+                el.style.opacity = "0"
+            }
+        });
+    }
+
+    // When a button change, run the filter function
+    checkboxes.on("change", filter);
   
-      // When a button change, run the update function
-      d3.selectAll(".checkbox").on("change",update);
-  
-      // Initialize at start
-      update()
+    // If map moves (zoom or drag), update circles position
+    map.on("moveend", update)
+
+    // Initialise at start
+    update()
 }
