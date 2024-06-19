@@ -81,8 +81,8 @@ function ready(error, data) {
         .attr("cy", function (d) {
             return map.latLngToLayerPoint([d.lat, d.long]).y;
         })
-        .attr("r", 6)
-        .style("fill", "springgreen")
+        .attr("r", 5)
+        .style("fill", "royalblue")
         .attr("fill-opacity", 0.50)
         .style("pointer-events", "all")
     .on("mouseover", mouseover)
