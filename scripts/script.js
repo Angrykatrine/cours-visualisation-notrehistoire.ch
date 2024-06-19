@@ -40,7 +40,6 @@ function ready(error, data) {
 
     // Function to update tooltip: hover
     var mouseover = function(d) {
-        console.log('hover')
         tooltip.style("opacity", 1)
     }
 
@@ -131,9 +130,9 @@ function ready(error, data) {
             var viewsCheck = checked.views.length ? _.intersection(Array.from(el.classList), checked.views).length : true;
 
             if ( featuredCheck && mediaCheck && viewsCheck ) {
-                el.style.opacity = "1"
+                el.style.display = 'block';
             } else {
-                el.style.opacity = "0"
+                el.style.display = 'none';
             }
         });
     }
