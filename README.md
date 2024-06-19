@@ -34,6 +34,7 @@ Cette visualisation offre avant tout une impression. Elle ne permet pas d'expliq
 - d3 scale-chromatic - https://d3js.org/d3-scale-chromatic
 - Carte interactive - Leaflet: https://github.com/Leaflet/Leaflet?tab=readme-ov-file
 - Code inspiré du projet "Where surfers live" de Yan Holtz - https://www.data-to-viz.com/story/GPSCoordWithoutValue.html
-- Système de filtre inspiré du projet "Combination filters with checkboxes" - https://codepen.io/piotrek/pen/mXpRmQ?editors=1111 
+- Système de filtre inspiré du projet "Combination filters with checkboxes" - https://codepen.io/piotrek/pen/mXpRmQ?editors=1111
+- Tooltip inspiré de "Building tooltips with d3.js" - https://d3-graph-gallery.com/graph/interactivity_tooltip.html  
 
 
