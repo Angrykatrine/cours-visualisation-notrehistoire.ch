@@ -81,7 +81,12 @@ function ready(error, data) {
             return map.latLngToLayerPoint([d.lat, d.long]).y;
         })
         .attr("r", 5)
-        .style("fill", "royalblue")
+        .style("fill", function(d){
+            if(d.media=="photo"){ return "blue" }
+            else if(d.media=="audio"){ return "red" }
+            else if(d.media=="video"){ return "green" }
+            else if(d.media=="story"){ return "yellow" }
+        })
         .attr("fill-opacity", 0.50)
         .style("pointer-events", "all")
     .on("mouseover", mouseover)
