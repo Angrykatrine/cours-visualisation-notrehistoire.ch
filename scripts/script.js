@@ -82,10 +82,10 @@ function ready(error, data) {
         })
         .attr("r", 5)
         .style("fill", function(d){
-            if(d.media=="photo"){ return "blue" }
-            else if(d.media=="audio"){ return "red" }
-            else if(d.media=="video"){ return "green" }
-            else if(d.media=="story"){ return "yellow" }
+            if(d.media=="photo"){ return "midnightblue" }
+            else if(d.media=="audio"){ return "mediumvioletred" }
+            else if(d.media=="video"){ return "springgreen" }
+            else if(d.media=="story"){ return "orange" }
         })
         .attr("fill-opacity", 0.50)
         .style("pointer-events", "all")
