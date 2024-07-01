@@ -84,7 +84,7 @@ function ready(error, data) {
         .style("fill", function(d){
             if(d.media=="photo"){ return "darkblue" }
             else if(d.media=="audio"){ return "mediumvioletred" }
-            else if(d.media=="video"){ return "springgreen" }
+            else if(d.media=="video"){ return "limegreen" }
             else if(d.media=="story"){ return "orange" }
         })
         .attr("fill-opacity", 0.50)
