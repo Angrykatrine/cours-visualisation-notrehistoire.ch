@@ -82,7 +82,7 @@ function ready(error, data) {
         })
         .attr("r", 5)
         .style("fill", function(d){
-            if(d.media=="photo"){ return "midnightblue" }
+            if(d.media=="photo"){ return "darkblue" }
             else if(d.media=="audio"){ return "mediumvioletred" }
             else if(d.media=="video"){ return "springgreen" }
             else if(d.media=="story"){ return "orange" }
